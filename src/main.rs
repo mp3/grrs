@@ -16,4 +16,10 @@ fn main() {
             println!("{}", line)
         }
     }
+
+    let result = std::fs::read_to_string("tesy.txt");
+    match result {
+        Ok(content) => { println!("File content: {}", content); }
+        Err(error) => { println!("Oh noes: {}", error); }
+    }
 }
