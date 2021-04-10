@@ -7,7 +7,7 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::from_args();
     let content = std::fs::read_to_string(&args.path).expect("could not read file");
 
@@ -17,6 +17,11 @@ fn main() {
         }
     }
 
-    let content = std::fs::read_to_string("test.txt").unwrap();
-    println!("file content: {}", content)
+    let results = std::fs::read_to_string("test.txt");
+    let content = match results {
+        Ok(content) => { content },
+        Err(error) => { return Err(error.into()); }
+    };
+    println!("file content: {}", content);
+    Ok(())
 }
