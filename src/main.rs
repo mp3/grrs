@@ -1,4 +1,5 @@
 use structopt::StructOpt;
+use anyhow::{Context, Result};
 
 #[derive(StructOpt)]
 struct Cli {
@@ -7,7 +8,10 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[derive(Debug)]
+struct CustomError(String);
+
+fn main() -> Result<()> {
     let args = Cli::from_args();
     let content = std::fs::read_to_string(&args.path).expect("could not read file");
 
@@ -17,7 +21,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    let content = std::fs::read_to_string("test.txt")?;
+    let path = "test.txt";
+    let content = std::fs::read_to_string(path)
+        .with_context(|| format!("could not read file `{}`", path))?;
     println!("file content: {}", content);
     Ok(())
 }
