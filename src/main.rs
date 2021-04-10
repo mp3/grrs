@@ -17,10 +17,6 @@ fn main() {
         }
     }
 
-    let results = std::fs::read_to_string("test.txt");
-    let content = match results {
-        Ok(content) => { content },
-        Err(error) => { panic!("Can't deal with {}, just exit here", error); }
-    };
+    let content = std::fs::read_to_string("test.txt").unwrap();
     println!("file content: {}", content)
 }
